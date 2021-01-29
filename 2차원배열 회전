@@ -1,0 +1,80 @@
+#include<stdio.h>
+#include<conio.h>
+
+arr[10][10];
+int size;
+
+void print();
+
+int main() {
+    int num = 1;
+    int dir;
+    int tmp;
+    int i, j;
+
+    scanf("%d", &size);
+
+    for (i = 0; i < size; ++i) {
+        for (j = 0; j < size; ++j) {
+            arr[i][j] = num;
+            num++;
+        }
+    }
+
+    print();
+
+    while (1) {
+
+        dir = _getch(); // 75왼 77오 
+
+        if (dir == 77) {
+
+            for (i = 0; i < size / 2; i++)
+            {
+                for (j = i; j < size - i - 1; j++) {
+
+                    tmp = arr[size - j - 1][i];
+                    arr[size - j - 1][i] = arr[size - i - 1][size - j - 1];
+                    arr[size - i - 1][size - j - 1] = arr[j][size - i - 1];
+                    arr[j][size - i - 1] = arr[i][j];
+                    arr[i][j] = tmp;
+
+                }
+            } // 시계 방향
+            print();
+        }
+        else if (dir == 75) {
+            for (i = 0; i < size / 2; ++i) {
+                for (j = i; j < size - i - 1; ++j) {
+
+                    tmp = arr[j][size - i - 1];
+                    arr[j][size - i - 1] = arr[size - i - 1][size - j - 1];
+                    arr[size - i - 1][size - j - 1] = arr[size - j - 1][i];
+                    arr[size - j - 1][i] = arr[i][j];
+                    arr[i][j] = tmp;
+
+                }
+            }
+            print();
+        }
+        
+
+        /*    (m, n) > (3 - n, m)
+              (3 - n, m) > (3 - m, 3 - n)
+              (3 - m, 3 - n) > (n, 3 - m)
+              (n, 3 - m) > (m, n) 반 시계 방향 규칙 */
+
+    }
+}
+
+void print() {
+    int i,j;
+ 
+    for (i = 0; i < size; ++i) {
+        for (j = 0; j < size; ++j) {
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
