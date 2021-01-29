@@ -1,0 +1,83 @@
+#include <stdio.h>
+
+int a[16][16] = { 0 };
+int b[16][16] = { 0 };
+int c[16][16] = { 0 };
+
+int main() {
+    int num = 1;
+    int n, m, k; // 1<=n,m<=15 n과 m이 동시에 1인 경우 없음
+    int kx, ky; // k의 x,y좌표
+    int kPos = 0;
+    int end = 0;
+    int i, j;
+
+    /*
+        N 행이고 열의 수가 M
+        격자의 어떤 칸은 O표시 있음(1번 칸과 N×M번 칸은 O 표시X)
+        O 표시 된 칸은 최대 한 개 >> O표시가 없을 수도 있음.
+
+        로봇은 오른쪽, 아래로만 이동 가능
+        O 표시된 칸 무조건 지나야함
+        이동할 수 있는 서로 다른 경로 총 몇 개인지 구할 것
+
+    */
+       
+    scanf("%d %d %d", &n, &m, &k);
+
+    for (i = 1; i <= n; ++i) {
+        for (j = 1; j <= m; ++j) {
+            a[i][j] = num;
+            num++;
+            if (k > 0 && a[i][j] == k) {
+                ky = i;
+                kx = j;
+            } // k가 있으면 k값 좌표 구함
+        }
+    }
+
+    if (k > 0) {
+
+        for (i = 1; i <= ky; i++) {
+            for (j = 1; j <= kx; j++) {
+
+                b[i][j] = 1;
+                b[1][1] = 0;
+
+                if (b[i - 1][j] > 0 || b[i][j - 1] > 0) {
+                    b[i][j] = b[i - 1][j] + b[i][j - 1];
+                }
+                kPos = b[ky][kx];
+            }
+        }
+
+        for (i = ky; i <= n; ++i) {
+            for (j = kx; j <= m; ++j) {
+                c[i][j] = 1;
+                c[ky][kx] = 0;
+
+                if (c[i - 1][j] > 0 || c[i][j - 1] > 0) {
+                    c[i][j] = c[i - 1][j] + c[i][j - 1];
+                }
+                end = c[n][m];
+            }
+        }
+    }
+    else {
+        for (i = 1; i <= n; ++i) {
+            for (j = 1; j <= m; ++j) {
+                c[i][j] = 1;
+                c[1][1] = 0;
+
+                if (c[i - 1][j] > 0 || c[i][j - 1] > 0) {
+                    c[i][j] = c[i - 1][j] + c[i][j - 1];
+                }
+                end = c[n][m];
+            }
+        }
+    }
+
+    printf("%d", kPos * end);
+   
+    return 0;
+}
